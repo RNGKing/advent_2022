@@ -1,11 +1,5 @@
-const { Console } = require("console");
 const fs = require("fs");
-const { maxHeaderSize } = require("http");
-
-
-let data = fs.readFileSync('calories.txt');
-let split = data.toString().split('\n');
-
+let split = fs.readFileSync('calories.txt').toString().split('\n');
 let strange = split.map(entry=>{
     if(entry.length >0)
     {
