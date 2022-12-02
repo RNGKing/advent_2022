@@ -1,28 +1,15 @@
-const fs = require("fs");
-let split = fs.readFileSync('calories.txt').toString().split('\n');
-let strange = split.map(entry=>{
-    if(entry.length >0)
-    {
-        return entry + 'n';
-    }
-    else{
-        return 'x'
-    }
-})
-.join()
-.replace(new RegExp(',', 'g'),'')
-.split('x')
-.map(item => item.split('n'))
-.map(item => item.filter(i => i.length > 0))
-.map(item => item.map(i => Number(i)))
-.map(g=> g.reduce((partialSum, x) => partialSum + x, 0));
+#!/usr/local/bin/node
 
-console.log('answer to part 1: ' + Math.max.apply(null, strange));
+const help = () =>{
+    console.log('CLI app takes one argument, which is the file path to the data! Expected usage \'./main.js <path>\'');
+};
 
-let sumOfTopThree = 
-    strange.sort((a , b) => a - b)
-    .reverse()
-    .splice(0, 3)
-    .reduce((partialSum, x) => partialSum + x, 0);
-
-console.log('answer to part two : ' + sumOfTopThree);
+let args = process.argv; 
+if(args.length != 3)
+{
+    help();
+}
+else{
+    const dayOne = require('./dayone.js');
+    dayOne.outputDayOneSolution(args[2]);
+}
