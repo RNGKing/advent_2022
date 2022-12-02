@@ -1,28 +1,34 @@
+const { Console } = require("console");
 const fs = require("fs");
-
+const { maxHeaderSize } = require("http");
 
 
 let data = fs.readFileSync('calories.txt');
 let split = data.toString().split('\n');
-let groups = [];
-let group = [];
-console.log(split.length);
-for(let i = 0; i < split.length; i++){
 
-    if(split[i].length > 0 && i < split.length - 1){
-        group.push(Number(split[i]));
-    }
-    else if(i === split.length - 1){
-        
-        group.push(Number(split[i]));
-        groups.push(group);
+let strange = split.map(entry=>{
+    if(entry.length >0)
+    {
+        return entry + 'n';
     }
     else{
-        groups.push(group);
-        group = [];
+        return 'x'
     }
-}
-let mapped = groups.map(g => g.reduce((partialSum, x) => partialSum + x, 0));
-let topThreeValue = mapped.sort((a,b) => a - b).reverse().slice(0, 3)
-    .reduce((partialSum, a) => partialSum + a, 0);
-console.log(topThreeValue);
+})
+.join()
+.replace(new RegExp(',', 'g'),'')
+.split('x')
+.map(item => item.split('n'))
+.map(item => item.filter(i => i.length > 0))
+.map(item => item.map(i => Number(i)))
+.map(g=> g.reduce((partialSum, x) => partialSum + x, 0));
+
+console.log('answer to part 1: ' + Math.max.apply(null, strange));
+
+let sumOfTopThree = 
+    strange.sort((a , b) => a - b)
+    .reverse()
+    .splice(0, 3)
+    .reduce((partialSum, x) => partialSum + x, 0);
+
+console.log('answer to part two : ' + sumOfTopThree);
