@@ -23,11 +23,14 @@ const groupSplitIntoNumbers = (textArray) => {
     .map(item => item.map(i => Number(i)))
 };
 
+const sumCalories = (textArray) =>{
+    return groupSplitIntoNumbers(textArray)
+    .map(g=> g.reduce((partialSum, x) => partialSum + x, 0));
+}
+
 const dayOneSolution = (filePath) => {
     let textArray = parseTextSync(filePath) ;
-    let sumGroup = groupSplitIntoNumbers(textArray)
-            .map(g=> g.reduce((partialSum, x) => partialSum + x, 0));
-
+    let sumGroup = sumCalories(textArray);
 
     return {
         'partOne' : Math.max.apply(null, sumGroup),
